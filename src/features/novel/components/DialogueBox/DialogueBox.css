@@ -1,0 +1,41 @@
+/* ===================== ОКНО РЕПЛИКИ ===================== */
+/* Цвета — из токенов (src/index.css) */
+
+.dialogue-box {
+  width: min(900px, 100%);
+  padding: 28px;
+  border: 1px solid rgba(216, 191, 163, 0.35);  /* полупрозрачная рамка */
+  border-radius: var(--radius-lg);
+  background: rgba(11, 6, 8, 0.78);             /* полупрозрачный тёмный фон */
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);                  /* лёгкое размытие за окном */
+}
+
+.speaker-name {
+  margin: 0 0 12px;
+  color: var(--color-text-muted);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.dialogue-text {
+  margin: 0 0 24px;
+  font-size: 24px;
+  line-height: 1.6;
+}
+
+.next-button {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-maroon);
+  color: var(--color-text);
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.next-button:hover {
+  background: var(--color-red);
+  transform: translateY(-2px);
+}

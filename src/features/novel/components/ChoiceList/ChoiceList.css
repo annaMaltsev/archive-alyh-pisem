@@ -1,0 +1,27 @@
+/* ===================== КНОПКИ ВЫБОРА ===================== */
+/* Цвета — из токенов (src/index.css) */
+
+.choice-list {
+  width: min(900px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choice-button {
+  padding: 16px 20px;
+  border: 1px solid rgba(216, 191, 163, 0.4);  /* полупрозрачная рамка */
+  border-radius: var(--radius-md);
+  background: rgba(42, 13, 20, 0.92);          /* тёмно-винный полупрозрачный */
+  color: var(--color-text);
+  font-size: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.choice-button:hover {
+  border-color: var(--color-text-muted);
+  background: rgba(138, 30, 45, 0.95);
+  transform: translateY(-2px);
+}

@@ -1,0 +1,143 @@
+/* ===================== СТРАНИЦА-ЗАГЛУШКА (готический стиль) ===================== */
+
+.coming-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(40px, 8vh, 90px) var(--space-4) 0;
+  text-align: center;
+  overflow: hidden;
+
+  /* Глубокий мрачный фон: алое «свечение свечи» сверху, тёмная виньетка снизу, почти чёрный градиент */
+  background:
+    radial-gradient(70% 50% at 50% 22%, rgba(140, 24, 40, 0.38), transparent 70%),
+    radial-gradient(130% 90% at 50% 110%, rgba(0, 0, 0, 0.9), transparent 55%),
+    linear-gradient(180deg, #1a0509, #0b0608 55%, #050203);
+}
+
+/* Золотая орнаментальная рамка (как у баннера) + внутренняя виньетка */
+.coming-frame {
+  position: absolute;
+  inset: 16px;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px solid rgba(201, 168, 106, 0.5);
+  box-shadow: inset 0 0 140px rgba(0, 0, 0, 0.75);
+}
+.coming-frame::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(201, 168, 106, 0.22);
+}
+
+/* Текстовый блок */
+.coming-content {
+  position: relative;
+  z-index: 2;
+  margin-top: 4vh;
+  max-width: 760px;
+}
+
+.coming-eyebrow {
+  font-family: var(--font-display);
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: clamp(11px, 1.5vw, 14px);
+  color: var(--color-gold-soft);
+  margin-bottom: var(--space-4);
+}
+
+/* Готический заголовок — крупный, «выгравированное золото» */
+.coming-title {
+  font-family: "Uncial Antiqua", "Yeseva One", serif;
+  font-size: clamp(40px, 8vw, 92px);
+  line-height: 1.12;
+  letter-spacing: 1px;
+  background: linear-gradient(180deg, #f6ead0 0%, #c9a86a 52%, #7c5d2e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter:
+    drop-shadow(0 2px 1px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 0 34px rgba(178, 58, 72, 0.45));
+}
+
+/* Орнаментальный разделитель с ромбом */
+.coming-divider {
+  position: relative;
+  width: min(280px, 64%);
+  height: 1px;
+  margin: var(--space-4) auto;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+.coming-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--color-gold);
+  box-shadow: 0 0 10px rgba(201, 168, 106, 0.7);
+}
+
+.coming-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: clamp(14px, 2vw, 20px);
+}
+
+/* Близнецы у нижнего края, чуть внахлёст */
+.coming-twins {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.coming-twin {
+  width: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.6));
+  animation: twin-breathe 5s ease-in-out infinite;
+}
+
+.coming-twin--ellian {
+  max-height: 50vh;
+  z-index: 2; /* Элиан чуть впереди */
+}
+
+.coming-twin--noel {
+  max-height: 46vh;
+  margin-left: -7%; /* лёгкий нахлёст — близнецы стоят рядом */
+  z-index: 1;
+  animation-delay: -2.5s; /* «дышат» не в такт — живее */
+}
+
+@keyframes twin-breathe {
+  0%,
+  100% { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-7px) scale(1.008); }
+}
+
+@media (max-width: 600px) {
+  .coming-twin--ellian { max-height: 34vh; }
+  .coming-twin--noel { max-height: 31vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coming-twin { animation: none; }
+}

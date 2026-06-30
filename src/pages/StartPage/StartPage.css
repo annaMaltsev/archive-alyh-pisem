@@ -1,0 +1,150 @@
+/* ===================== ГЛАВНЫЙ ЭКРАН ===================== */
+/* Мобайл-фёрст. Фон — твои картинки: телефонная по умолчанию, ноутбучная — на широких экранах.
+   background-size: cover заставляет картинку заполнять экран и масштабироваться вместе с ним. */
+
+.start-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;          /* dvh учитывает адресную строку телефона */
+  overflow: hidden;
+
+  background-color: var(--color-bg);
+  background-image: url("/images/backgrounds/main-bg-phone.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Персонаж (фон уже вырезан). Кликабелен. На телефоне — компактный, не прячется. */
+.start-character {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  max-height: 42vh;            /* телефон: меньше, в правом нижнем углу */
+  width: auto;
+  cursor: pointer;            /* показываем, что по нему можно кликнуть */
+  user-select: none;
+  -webkit-user-select: none;
+  transform-origin: bottom center;
+  animation: character-breathe 5s ease-in-out infinite;
+  filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.55));
+}
+
+/* Спокойное «дыхание». Меняй -8px (амплитуда), 0.6deg (наклон), 5s (скорость). */
+@keyframes character-breathe {
+  0%,
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50%  { transform: translateY(-8px) rotate(0.6deg) scale(1.01); }
+}
+
+/* Кнопка «Начать» — внизу по центру, в стиле баннера (золото + вино) */
+.start-button {
+  position: absolute;
+  bottom: 6vh;                 /* ниже, чтобы не загораживать герб на фоне */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+
+  font-family: var(--font-display);
+  font-size: clamp(13px, 2vw, 18px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+
+  background: linear-gradient(180deg, rgba(38, 8, 14, 0.55), rgba(18, 4, 8, 0.7));
+  border: 1px solid var(--color-gold);
+  border-radius: 2px;
+  padding: 13px 42px;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 168, 106, 0.18),   /* тонкая внутренняя рамка — эффект «двойной» */
+    0 8px 26px rgba(0, 0, 0, 0.5);
+  transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease,
+    letter-spacing 0.25s ease;
+}
+
+.start-button:hover {
+  color: var(--color-cream);
+  background: linear-gradient(180deg, var(--color-maroon), var(--color-maroon-deep));
+  letter-spacing: 5px;
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 168, 106, 0.35),
+    0 0 20px rgba(201, 168, 106, 0.35),          /* мягкое золотое свечение */
+    0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+.start-button:active {
+  transform: translateX(-50%) translateY(1px);
+}
+
+/* ===== Широкие экраны (ноутбук/десктоп) ===== */
+@media (min-width: 860px) {
+  .start-page {
+    background-image: url("/images/backgrounds/main-bg-laptop.png");
+  }
+
+  .start-character {
+    max-height: 92vh;          /* крупный Кай справа */
+  }
+}
+
+/* Доступность: если в системе выключены анимации — персонаж не дёргается */
+@media (prefers-reduced-motion: reduce) {
+  .start-character {
+    animation: none;
+  }
+}
+
+/* ===================== УВЕДОМЛЕНИЕ-ПРИВЕТСТВИЕ (как SMS) ===================== */
+.welcome-toast {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 24px));
+  padding: 11px 16px;
+  background: linear-gradient(180deg, rgba(40, 10, 16, 0.97), rgba(18, 5, 8, 0.97));
+  border: 1px solid var(--color-gold);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 168, 106, 0.15),
+    0 12px 30px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  animation: toast-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.welcome-toast-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--color-gold);
+}
+
+.welcome-toast-body {
+  text-align: left;
+}
+
+.welcome-toast-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--color-gold-soft);
+  margin-bottom: 1px;
+}
+
+.welcome-toast-text {
+  font-size: 14px;
+  color: var(--color-cream);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-22px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
