@@ -32,3 +32,20 @@
   letter-spacing: 1px;
   opacity: 0.75;
 }
+
+/* На телефоне делаем окно реплики компактнее, чтобы персонажу было больше места */
+@media (max-width: 700px) {
+  .dialogue-box {
+    padding: 18px;
+    border-radius: 18px;
+  }
+  .speaker-name {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .dialogue-text {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+}

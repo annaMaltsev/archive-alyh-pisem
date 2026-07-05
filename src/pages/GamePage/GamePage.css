@@ -170,9 +170,18 @@
 
 @media (max-width: 700px) {
   .game-page-overlay {
-    padding: 24px;
+    padding: 16px;
   }
+  /* Крупный заголовок прячем — на телефоне он только съедает место */
+  .game-top-panel h1 {
+    display: none;
+  }
+  .game-label {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  /* Спрайт крупнее — чтобы лицо было НАД окном реплики, а не пряталось за ним */
   .game-character {
-    max-height: 52vh;
+    max-height: 70vh;
   }
 }
