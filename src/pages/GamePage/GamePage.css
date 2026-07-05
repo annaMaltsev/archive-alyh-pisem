@@ -3,25 +3,107 @@
 
 .game-page {
   min-height: 100vh;
+  min-height: 100dvh;
   color: var(--color-text);
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer; /* весь экран кликабелен для продвижения истории */
+}
+
+/* Фоны сцен — мобайл-фёрст: по умолчанию телефонные версии,
+   на широких экранах (min-width: 860px) — горизонтальные. */
+.background-prologue {
+  background-image: url("/images/backgrounds/PrologueBackgroundPhone.png");
+}
+.background-room {
+  background-image: url("/images/backgrounds/RoomPhone.png");
+}
+.background-kitchen {
+  background-image: url("/images/backgrounds/kitchenPhone.png");
+}
+.background-street {
+  background-image: url("/images/backgrounds/StreetPhone.png");
+}
+.background-hall {
+  background-image: url("/images/backgrounds/HallPhone.png");
+}
+.background-lockers {
+  background-image: url("/images/backgrounds/lockersPhone.png");
+}
+.background-cgletter {
+  background-image: url("/images/backgrounds/CGLetterPhone.png");
+}
+
+@media (min-width: 860px) {
+  .background-prologue {
+    background-image: url("/images/backgrounds/PrologueBackgroundDesktop.png");
+  }
+  .background-room {
+    background-image: url("/images/backgrounds/room.png");
+  }
+  .background-kitchen {
+    background-image: url("/images/backgrounds/kitchen.png");
+  }
+  .background-street {
+    background-image: url("/images/backgrounds/street.png");
+  }
+  .background-hall {
+    background-image: url("/images/backgrounds/hall.png");
+  }
+  .background-lockers {
+    background-image: url("/images/backgrounds/lockers.png");
+  }
+  .background-cgletter {
+    background-image: url("/images/backgrounds/CGLetter.png");
+  }
 }
 
 .game-page-overlay {
+  position: relative; /* чтобы спрайт персонажа позиционировался внутри */
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 48px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* Затемнение поверх фоновой картинки — чтобы текст всегда читался */
   background:
-    linear-gradient(rgba(11, 6, 8, 0.45), rgba(11, 6, 8, 0.88)),
-    radial-gradient(circle at top, rgba(138, 30, 45, 0.45), transparent 60%);
+    linear-gradient(rgba(11, 6, 8, 0.35), rgba(11, 6, 8, 0.85)),
+    radial-gradient(circle at top, rgba(138, 30, 45, 0.28), transparent 60%);
+}
+
+/* Спрайт персонажа — по центру, стоит на нижнем крае, позади текста */
+.game-character {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  max-height: 76vh;
+  width: auto;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.6));
+  animation: sprite-in 0.35s ease;
+}
+
+@keyframes sprite-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Шапка и текст — поверх спрайта */
+.game-top-panel {
+  position: relative;
+  z-index: 2;
 }
 
 .game-top-panel h1 {
   margin: 0;
-  font-size: 56px;
+  font-size: clamp(28px, 4vw, 44px);
   font-family: var(--font-display);
+  color: var(--color-cream);
   text-shadow: 0 0 24px rgba(138, 30, 45, 0.8);
 }
 
@@ -29,11 +111,13 @@
   margin: 0 0 8px;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 14px;
+  letter-spacing: 3px;
+  font-size: 13px;
 }
 
 .game-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -41,13 +125,54 @@
 
 .chapter-result {
   width: min(900px, 100%);
-  padding: 24px;
+  padding: 24px 28px;
   border-radius: var(--radius-lg);
   background: rgba(216, 191, 163, 0.08);
   border: 1px solid rgba(216, 191, 163, 0.35);
+  text-align: center;
+}
+
+.chapter-result-label {
+  margin: 0 0 6px;
+  color: var(--color-gold-soft);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 13px;
 }
 
 .chapter-result h2 {
-  margin-top: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  color: var(--color-cream);
+  font-size: clamp(22px, 3.5vw, 32px);
+}
+
+/* Итог: фаворит / характер / путь */
+.chapter-result-stats {
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--color-text);
+}
+.chapter-result-stats strong {
+  color: var(--color-cream);
+}
+.chapter-result-stats em {
+  color: var(--color-gold-soft);
+}
+
+.chapter-result-note {
+  margin: 14px 0 0;
   color: var(--color-text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  .game-page-overlay {
+    padding: 24px;
+  }
+  .game-character {
+    max-height: 52vh;
+  }
 }

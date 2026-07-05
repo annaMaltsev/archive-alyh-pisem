@@ -1,39 +1,42 @@
 import type { Character } from "../types/novelTypes";
 
+// Имена показываются в окне реплики. У рассказчика имя пустое — подписи нет.
 export const characters: Record<string, Character> = {
   narrator: {
     id: "narrator",
-    name: "Рассказчик",
-    description: "Внутренний голос истории",
+    name: "Narrator",
+    description: "Inner voice of the story.",
   },
   hero: {
     id: "hero",
-    name: "Герой",
-    description: "Главный герой, имя выбирает игрок",
+    name: "You",
+    description: "The protagonist. The player will choose the name later.",
   },
   kai: {
     id: "kai",
-    name: "Кай Астор",
-    description: "Лучший друг героя, который скрывает правду",
+    name: "Kai Astor",
+    description:
+      "Hero's childhood friend, Viktor's son. Guarded; senses the return is dangerous.",
   },
   leonard: {
     id: "leonard",
-    name: "Леонард Вейл",
-    description: "Куратор академии и опасный антагонист",
+    name: "Leonard Veil",
+    description:
+      "Professor, friend of the hero's late foster parents. Cold, contradictory care.",
   },
   elian: {
     id: "elian",
-    name: "Элиан Верн",
-    description: "Весёлый близнец, который скрывает властность и жестокость",
+    name: "Elian Vern",
+    description: "Charming, controlling twin of the Vern family.",
   },
   noel: {
     id: "noel",
-    name: "Ноэль Верн",
-    description: "Спокойный близнец, находящийся под влиянием Элиана",
+    name: "Noel Vern",
+    description: "Quiet, watchful twin; analyst of the digital archive.",
   },
   viktor: {
     id: "viktor",
-    name: "Виктор Астор",
-    description: "Отец Кая, человек с властью над академией",
+    name: "Viktor Astor",
+    description: "Head of the Astor line. Power and control.",
   },
 };

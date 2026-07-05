@@ -38,14 +38,21 @@
   50%  { transform: translateY(-8px) rotate(0.6deg) scale(1.01); }
 }
 
-/* Кнопка «Начать» — внизу по центру, в стиле баннера (золото + вино) */
-.start-button {
+/* Ряд кнопок (Start + Continue) — внизу по центру */
+.start-buttons {
   position: absolute;
   bottom: 6vh;                 /* ниже, чтобы не загораживать герб на фоне */
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;             /* на узком экране кнопки перенесутся */
+  justify-content: center;
+}
 
+/* Кнопка в стиле баннера (золото + вино) */
+.start-button {
   font-family: var(--font-display);
   font-size: clamp(13px, 2vw, 18px);
   letter-spacing: 2px;
@@ -62,21 +69,33 @@
     inset 0 0 0 1px rgba(201, 168, 106, 0.18),   /* тонкая внутренняя рамка — эффект «двойной» */
     0 8px 26px rgba(0, 0, 0, 0.5);
   transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease,
-    letter-spacing 0.25s ease;
+    transform 0.1s ease;
 }
 
-.start-button:hover {
+.start-button:hover:not(:disabled) {
   color: var(--color-cream);
   background: linear-gradient(180deg, var(--color-maroon), var(--color-maroon-deep));
-  letter-spacing: 5px;
   box-shadow:
     inset 0 0 0 1px rgba(201, 168, 106, 0.35),
     0 0 20px rgba(201, 168, 106, 0.35),          /* мягкое золотое свечение */
     0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
-.start-button:active {
-  transform: translateX(-50%) translateY(1px);
+.start-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Второстепенная кнопка (Continue) — чуть скромнее */
+.start-button--secondary {
+  color: var(--color-gold-soft);
+  border-color: rgba(201, 168, 106, 0.6);
+}
+
+/* Неактивная кнопка (Continue, пока нет сохранения) */
+.start-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
 }
 
 /* ===== Широкие экраны (ноутбук/десктоп) ===== */

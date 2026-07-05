@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./StartPage.css";
 
-// Пропсы — входные данные компонента. Нужна одна функция: что делать по кнопке.
+// Пропсы — входные данные компонента. Нужна одна функция: что делать по кнопке Start.
 type StartPageProps = {
   onStart: () => void;
 };
@@ -12,14 +12,15 @@ function StartPage({ onStart }: StartPageProps) {
   // showWelcome — показывать ли уведомление-приветствие.
   const [showWelcome, setShowWelcome] = useState(false);
 
-  // Уведомление показываем только при ПЕРВОМ визите (метка в localStorage).
+  // Есть ли сохранённый прогресс — для кнопки Continue.
+  // Пока сохранений нет, поэтому кнопка будет неактивной. Появится сохранение — «загорится».
+  const hasSave = Boolean(localStorage.getItem("asl_save"));
+
+  // Уведомление показываем при КАЖДОМ заходе на главную (без запоминания).
   useEffect(() => {
-    if (localStorage.getItem("asl_seen_welcome")) return;
-    localStorage.setItem("asl_seen_welcome", "1");
     setShowWelcome(true);
 
-    // Звук уведомления. Браузер может заблокировать звук до первого клика
-    // по странице — тогда .catch() просто молча проглотит ошибку.
+    // Звук уведомления. Браузер может заблокировать автозвук до первого клика по странице.
     const audio = new Audio("/sounds/notify.wav");
     audio.volume = 0.5;
     audio.play().catch(() => {});
@@ -52,11 +53,20 @@ function StartPage({ onStart }: StartPageProps) {
         }}
       />
 
-      <button className="start-button" onClick={onStart}>
-        Enter the Archive
-      </button>
+      {/* Ряд кнопок: Start и Continue */}
+      <div className="start-buttons">
+        <button className="start-button" onClick={onStart}>
+          Enter the Archive
+        </button>
+        <button
+          className="start-button start-button--secondary"
+          disabled={!hasSave}
+        >
+          Continue
+        </button>
+      </div>
 
-      {/* Уведомление-приветствие (как SMS) — только первый визит */}
+      {/* Уведомление-приветствие (как SMS) — при каждом визите */}
       {showWelcome && (
         <div
           className="welcome-toast"
@@ -65,7 +75,7 @@ function StartPage({ onStart }: StartPageProps) {
         >
           <span className="welcome-toast-icon">✉</span>
           <div className="welcome-toast-body">
-            <p className="welcome-toast-title">Veilmore</p>
+            <p className="welcome-toast-title">Developer</p>
             <p className="welcome-toast-text">Don't forget to pet Kai</p>
           </div>
         </div>

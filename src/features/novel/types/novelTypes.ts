@@ -7,20 +7,25 @@ export type CharacterId =
   | "noel"
   | "viktor";
 
+// Фоны главы 1. Пока картинок нет — в GamePage.css заданы тёмные плейсхолдеры.
 export type BackgroundId =
-  | "station"
-  | "academy"
-  | "square"
-  | "archive"
-  | "corridor"
-  | "dorm";
+  | "prologue" // фон пролога (возвращение в Вейльмор)
+  | "street" // дорога к академии
+  | "room" // комната героя в квартире Леонарда
+  | "kitchen" // кухня/кабинет Леонарда
+  | "hall" // холл академии
+  | "lockers" // коридор со шкафчиками
+  | "cgletter"; // CG: крупный план письма
 
 export type GameScreen = "start" | "name" | "game";
 
+// Скрытые очки: тон героя (soft/bold) и отношения с персонажами.
 export type GameStats = {
   softScore: number;
   boldScore: number;
   kaiScore: number;
+  leonardScore: number;
+  twinsScore: number;
   viktorScore: number;
 };
 
@@ -38,6 +43,7 @@ export type Scene = {
   background: BackgroundId;
   speaker: CharacterId;
   text: string;
+  sprite?: string; // путь к спрайту персонажа (прозрачный PNG); если нет — персонаж не показывается
   nextSceneId?: string;
   choices?: Choice[];
 };

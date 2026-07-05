@@ -3,26 +3,18 @@ import "./DialogueBox.css";
 type DialogueBoxProps = {
   speakerName: string;
   text: string;
-  onNext?: () => void;
-  showNextButton: boolean;
+  showNextButton: boolean; // показывать ли подсказку «клик, чтобы продолжить»
 };
 
-function DialogueBox({
-  speakerName,
-  text,
-  onNext,
-  showNextButton,
-}: DialogueBoxProps) {
+function DialogueBox({ speakerName, text, showNextButton }: DialogueBoxProps) {
   return (
     <section className="dialogue-box">
-      <p className="speaker-name">{speakerName}</p>
+      {/* Имя показываем только если оно есть (у рассказчика — пустое) */}
+      {speakerName && <p className="speaker-name">{speakerName}</p>}
       <p className="dialogue-text">{text}</p>
 
-      {showNextButton && (
-        <button className="next-button" onClick={onNext}>
-          Далее
-        </button>
-      )}
+      {/* Продвижение теперь по клику в любом месте экрана (см. GamePage) — это лишь подсказка */}
+      {showNextButton && <span className="next-hint">click to continue ▸</span>}
     </section>
   );
 }

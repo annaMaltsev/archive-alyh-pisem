@@ -4,29 +4,27 @@ import { characters } from "../../features/novel/data/characters";
 import type { Choice, GameStats } from "../../features/novel/types/novelTypes";
 import DialogueBox from "../../features/novel/components/DialogueBox/DialogueBox";
 import ChoiceList from "../../features/novel/components/ChoiceList/ChoiceList";
-import {
-  getPersonalityResult,
-  getRouteResult,
-} from "../../features/novel/utils/getEndingResult";
 import "./GamePage.css";
 
+// Стартовые очки — все по нулям.
 const initialStats: GameStats = {
   softScore: 0,
   boldScore: 0,
   kaiScore: 0,
+  leonardScore: 0,
+  twinsScore: 0,
   viktorScore: 0,
 };
 
 function GamePage() {
-  const [currentSceneId, setCurrentSceneId] = useState("return_1");
+  // Текущая сцена (по id) и накопленные очки.
+  const [currentSceneId, setCurrentSceneId] = useState("prologue_1");
   const [stats, setStats] = useState<GameStats>(initialStats);
 
-  const currentScene = chapter1Scenes.find(
-    (scene) => scene.id === currentSceneId
-  );
+  const currentScene = chapter1Scenes.find((scene) => scene.id === currentSceneId);
 
   if (!currentScene) {
-    return <div>Сцена не найдена</div>;
+    return <div className="game-page">Scene not found: {currentSceneId}</div>;
   }
 
   const speaker = characters[currentScene.speaker];
@@ -38,36 +36,72 @@ function GamePage() {
   };
 
   const selectChoice = (choice: Choice) => {
+    // Прибавляем к очкам все поля, что есть в effect (универсально, без перечисления).
     if (choice.effect) {
-      setStats((previousStats) => ({
-        ...previousStats,
-        softScore: previousStats.softScore + (choice.effect?.softScore ?? 0),
-        boldScore: previousStats.boldScore + (choice.effect?.boldScore ?? 0),
-        kaiScore: previousStats.kaiScore + (choice.effect?.kaiScore ?? 0),
-        viktorScore: previousStats.viktorScore + (choice.effect?.viktorScore ?? 0),
-      }));
+      setStats((previous) => {
+        const next = { ...previous };
+        (Object.keys(choice.effect!) as (keyof GameStats)[]).forEach((key) => {
+          next[key] = next[key] + (choice.effect![key] ?? 0);
+        });
+        return next;
+      });
     }
-
     setCurrentSceneId(choice.nextSceneId);
   };
 
   const isChapterEnd = currentScene.id === "chapter_end";
-  const personalityResult = getPersonalityResult(stats);
-  const routeResult = getRouteResult(stats);
+
+  // ---- Итог главы: характер, фаворит и путь по накопленным очкам ----
+  const character =
+    stats.boldScore === stats.softScore
+      ? "Balanced"
+      : stats.boldScore > stats.softScore
+        ? "Defiant"
+        : "Gentle";
+
+  const bonds = [
+    { name: "Kai", score: stats.kaiScore },
+    { name: "Leonard", score: stats.leonardScore },
+    { name: "the Vern twins", score: stats.twinsScore },
+    { name: "Viktor", score: stats.viktorScore },
+  ];
+  const topBond = bonds.reduce((best, bond) =>
+    bond.score > best.score ? bond : best
+  );
+  const favorite = topBond.score > 0 ? topBond.name : "no one — yet";
+  const path =
+    `The ${character.toLowerCase()} road ` +
+    (topBond.score > 0 ? `toward ${topBond.name}.` : "walked alone.");
 
   return (
-    <main className={`game-page background-${currentScene.background}`}>
+    // Клик по любому месту экрана продвигает историю вперёд.
+    <main
+      className={`game-page background-${currentScene.background}`}
+      onClick={goNext}
+    >
       <div className="game-page-overlay">
+        {/* Спрайт персонажа (если задан у сцены). key — чтобы при смене плавно появлялся. */}
+        {currentScene.sprite && (
+          <img
+            className="game-character"
+            src={currentScene.sprite}
+            alt=""
+            key={currentScene.sprite}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+        )}
+
         <header className="game-top-panel">
-          <p className="game-label">Глава 1</p>
-          <h1>Архив алых писем</h1>
+          <p className="game-label">Chapter One</p>
+          <h1>Archive of Scarlet Letters</h1>
         </header>
 
         <div className="game-content">
           <DialogueBox
             speakerName={speaker.name}
             text={currentScene.text}
-            onNext={goNext}
             showNextButton={Boolean(currentScene.nextSceneId)}
           />
 
@@ -80,25 +114,22 @@ function GamePage() {
 
           {isChapterEnd && (
             <section className="chapter-result">
-              <h2>Итог главы</h2>
+              <p className="chapter-result-label">End of Chapter One</p>
+              <h2>The First Day in the City</h2>
 
-              <p>
-                Характер героя:{" "}
-                <strong>
-                  {personalityResult === "bold"
-                    ? "дерзкий / уверенный"
-                    : "мягкий / осторожный"}
-                </strong>
-              </p>
+              <div className="chapter-result-stats">
+                <p>
+                  Favorite — <strong>{favorite}</strong>
+                </p>
+                <p>
+                  Character — <strong>{character}</strong>
+                </p>
+                <p>
+                  Path — <em>{path}</em>
+                </p>
+              </div>
 
-              <p>
-                Основная линия:{" "}
-                <strong>
-                  {routeResult === "viktor"
-                    ? "Виктор Астор"
-                    : "Кай Астор"}
-                </strong>
-              </p>
+              <p className="chapter-result-note">To be continued…</p>
             </section>
           )}
         </div>
