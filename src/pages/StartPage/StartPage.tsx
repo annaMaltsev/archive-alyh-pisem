@@ -58,12 +58,7 @@ function StartPage({ onStart }: StartPageProps) {
         <button className="start-button" onClick={onStart}>
           Enter the Archive
         </button>
-        <button
-          className="start-button start-button--secondary"
-          disabled={!hasSave}
-        >
-          Continue
-        </button>
+
       </div>
 
       {/* Уведомление-приветствие (как SMS) — при каждом визите */}

@@ -58,6 +58,18 @@
   .background-cgletter {
     background-image: url("/images/backgrounds/CGLetter.png");
   }
+
+  /* На широком экране персонаж уходит ВПРАВО (в свободное место), текст — слева */
+  .game-character,
+  .game-protector {
+    left: auto;
+    right: 3%;
+    transform: none;
+    max-height: 92vh;
+  }
+  .game-content {
+    max-width: 640px;
+  }
 }
 
 .game-page-overlay {
@@ -90,8 +102,22 @@
 }
 
 @keyframes sprite-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Элиан-защитник (при клике по Ноэлю) — поверх персонажа, той же позиции */
+.game-protector {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  max-height: 76vh;
+  width: auto;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.6));
+  animation: sprite-in 0.3s ease;
 }
 
 /* Шапка и текст — поверх спрайта */
@@ -182,7 +208,8 @@
     margin-bottom: 4px;
   }
   /* Спрайт крупнее — чтобы лицо было НАД окном реплики, а не пряталось за ним */
-  .game-character {
+  .game-character,
+  .game-protector {
     max-height: 70vh;
   }
 }

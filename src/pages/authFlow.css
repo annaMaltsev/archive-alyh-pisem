@@ -1,0 +1,182 @@
+/* ===================== ЭКРАНЫ ВХОДА (регистрация / язык / создание ГГ) =====================
+   Общий стиль для трёх экранов. Цвета — из токенов (src/index.css),
+   визуал тот же «дарк-романс», что и на главной. */
+
+.flow-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--color-text);
+  background:
+    radial-gradient(70% 50% at 50% 12%, rgba(138, 30, 45, 0.32), transparent 70%),
+    linear-gradient(180deg, #1a0509, #0b0608 60%, #050203);
+}
+
+.flow-card {
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  padding: 40px 32px;
+  background: linear-gradient(180deg, rgba(30, 8, 13, 0.92), rgba(14, 5, 7, 0.94));
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 168, 106, 0.15),
+    0 24px 70px rgba(0, 0, 0, 0.6);
+}
+
+.flow-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  color: var(--color-gold-soft);
+}
+
+.flow-title {
+  margin: 0 0 12px;
+  font-family: "Uncial Antiqua", var(--font-display), serif;
+  font-size: clamp(26px, 6vw, 40px);
+  line-height: 1.12;
+  background: linear-gradient(180deg, #f6ead0, #c9a86a 55%, #7c5d2e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.flow-sub {
+  margin: 0 0 26px;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.flow-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+
+.flow-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.flow-field > span {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-gold-soft);
+}
+
+.flow-input {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(201, 168, 106, 0.4);
+  border-radius: 4px;
+  padding: 12px 14px;
+  color: var(--color-text);
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.flow-input::placeholder {
+  color: rgba(216, 191, 163, 0.4);
+}
+
+.flow-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px rgba(201, 168, 106, 0.2);
+}
+
+.flow-button {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 15px;
+  color: var(--color-cream);
+  background: linear-gradient(180deg, var(--color-maroon), var(--color-maroon-deep));
+  border: 1px solid var(--color-gold);
+  border-radius: 3px;
+  padding: 13px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.1s ease;
+}
+
+.flow-button:hover {
+  box-shadow: 0 0 18px rgba(201, 168, 106, 0.4);
+}
+
+.flow-button:active {
+  transform: translateY(1px);
+}
+
+/* Крупные кнопки выбора (язык / пол) */
+.flow-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.flow-choices--row {
+  flex-direction: row;
+}
+
+.flow-choice {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--color-gold-soft);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(201, 168, 106, 0.5);
+  border-radius: 4px;
+  padding: 15px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.flow-choice:hover {
+  color: var(--color-cream);
+  background: var(--color-maroon);
+}
+
+.flow-choice.is-selected {
+  color: var(--color-cream);
+  background: var(--color-maroon);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 14px rgba(201, 168, 106, 0.35);
+}
+
+.flow-error {
+  margin: 0;
+  color: var(--color-red);
+  font-size: 14px;
+}
+
+.flow-link {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: var(--color-gold-soft);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.flow-link:hover {
+  color: var(--color-cream);
+}

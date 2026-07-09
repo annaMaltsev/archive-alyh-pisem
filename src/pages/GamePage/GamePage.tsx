@@ -6,7 +6,6 @@ import DialogueBox from "../../features/novel/components/DialogueBox/DialogueBox
 import ChoiceList from "../../features/novel/components/ChoiceList/ChoiceList";
 import "./GamePage.css";
 
-// Стартовые очки — все по нулям.
 const initialStats: GameStats = {
   softScore: 0,
   boldScore: 0,
@@ -16,26 +15,24 @@ const initialStats: GameStats = {
   viktorScore: 0,
 };
 
-// Клик по персонажу → короткая «реакция» (другая эмоция). Пара база → реакция.
+// Клик по персонажу → реакция (картинки прислала Khalil). Ноэль — особый случай (ниже).
 const reactionSprites: Record<string, string> = {
-  "/images/characters/kai-neutral.png": "/images/characters/kai-worried.png",
-  "/images/characters/kai-worried.png": "/images/characters/kai-neutral.png",
-  "/images/characters/leonard-neutral.png": "/images/characters/leonard-annoyed.png",
-  "/images/characters/leonard-annoyed.png": "/images/characters/leonard-neutral.png",
+  "/images/characters/kai-neutral.png": "/images/characters/kai-onclick.png",
+  "/images/characters/kai-worried.png": "/images/characters/kai-onclick.png",
+  "/images/characters/kai-annoyed.png": "/images/characters/kai-onclick.png",
+  "/images/characters/leonard-neutral.png": "/images/characters/leonard-onclick.png",
+  "/images/characters/leonard-annoyed.png": "/images/characters/leonard-onclick.png",
   "/images/characters/ellian-1.png": "/images/characters/ellian-2.png",
-  "/images/characters/noel-1.png": "/images/characters/noel-2.png",
-  "/images/characters/kai-touched.png": "/images/characters/kai-worried.png",
-  "/images/characters/leonard-sleepy.png": "/images/characters/leonard-annoyed.png",
 };
 
 function GamePage() {
   const [currentSceneId, setCurrentSceneId] = useState("prologue_1");
   const [stats, setStats] = useState<GameStats>(initialStats);
-  // Временный спрайт-реакция (когда кликнули по персонажу).
   const [reaction, setReaction] = useState<string | null>(null);
+  // Показываем ли Элиана-защитника (при клике по Ноэлю).
+  const [protector, setProtector] = useState(false);
 
   const currentScene = chapter1Scenes.find((scene) => scene.id === currentSceneId);
-
   if (!currentScene) {
     return <div className="game-page">Scene not found: {currentSceneId}</div>;
   }
@@ -44,6 +41,7 @@ function GamePage() {
 
   const goNext = () => {
     setReaction(null);
+    setProtector(false);
     if (currentScene.nextSceneId) {
       setCurrentSceneId(currentScene.nextSceneId);
     }
@@ -51,6 +49,7 @@ function GamePage() {
 
   const selectChoice = (choice: Choice) => {
     setReaction(null);
+    setProtector(false);
     if (choice.effect) {
       setStats((previous) => {
         const next = { ...previous };
@@ -63,10 +62,20 @@ function GamePage() {
     setCurrentSceneId(choice.nextSceneId);
   };
 
-  // Клик по персонажу: показать реакцию на ~1.2с. stopPropagation — чтобы НЕ листать историю.
   const handleCharacterClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (reaction || !currentScene.sprite) return;
+    if (!currentScene.sprite) return;
+
+    // Ноэль: рядом выскакивает Элиан-защитник и прикрывает его; сам Ноэль не меняется.
+    if (currentScene.sprite.includes("noel")) {
+      if (protector) return;
+      setProtector(true);
+      setTimeout(() => setProtector(false), 1600);
+      return;
+    }
+
+    // Остальные: короткая смена позы на «реакцию».
+    if (reaction) return;
     const next = reactionSprites[currentScene.sprite];
     if (!next) return;
     setReaction(next);
@@ -83,10 +92,11 @@ function GamePage() {
       : stats.boldScore > stats.softScore
         ? "Defiant"
         : "Gentle";
+  // Порядок важен для ничьих: близнецы и Леонард тоже могут стать фаворитом, а не всегда Кай.
   const bonds = [
-    { name: "Kai", score: stats.kaiScore },
-    { name: "Leonard", score: stats.leonardScore },
     { name: "the Vern twins", score: stats.twinsScore },
+    { name: "Leonard", score: stats.leonardScore },
+    { name: "Kai", score: stats.kaiScore },
     { name: "Viktor", score: stats.viktorScore },
   ];
   const topBond = bonds.reduce((best, bond) => (bond.score > best.score ? bond : best));
@@ -96,7 +106,6 @@ function GamePage() {
     (topBond.score > 0 ? `toward ${topBond.name}.` : "walked alone.");
 
   return (
-    // Клик по любому месту (кроме персонажа) продвигает историю вперёд.
     <main
       className={`game-page background-${currentScene.background}`}
       onClick={goNext}
@@ -109,6 +118,17 @@ function GamePage() {
             alt=""
             key={shownSprite}
             onClick={handleCharacterClick}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+        )}
+
+        {protector && (
+          <img
+            className="game-protector"
+            src="/images/characters/ellian-protector.png"
+            alt=""
             onError={(event) => {
               event.currentTarget.style.display = "none";
             }}
