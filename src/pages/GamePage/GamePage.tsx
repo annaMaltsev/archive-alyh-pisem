@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { chapter1Scenes } from "../../features/novel/data/chapter1";
 import { characters } from "../../features/novel/data/characters";
 import type { Choice, GameStats } from "../../features/novel/types/novelTypes";
+import type { Lang } from "../../features/i18n/strings";
+import { strings } from "../../features/i18n/strings";
 import DialogueBox from "../../features/novel/components/DialogueBox/DialogueBox";
 import ChoiceList from "../../features/novel/components/ChoiceList/ChoiceList";
 import ProfilePanel from "./ProfilePanel";
 import "./GamePage.css";
 
 type GamePageProps = {
+  language: Lang;
+  onChangeLanguage: (lang: Lang) => void;
   onLogout: () => void;
 };
 
@@ -47,7 +51,17 @@ const reactionSprites: Record<string, string> = {
   "/images/characters/ellian-1.png": "/images/characters/ellian-2.png",
 };
 
-function GamePage({ onLogout }: GamePageProps) {
+function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
+  const t = strings[language];
+  // Имя ГГ (введённое при создании) — подставляем в реплики героя.
+  let mcName = "";
+  try {
+    const rawMc = localStorage.getItem("asl_mc");
+    if (rawMc) mcName = (JSON.parse(rawMc) as { name?: string }).name ?? "";
+  } catch {
+    mcName = "";
+  }
+
   // Стартуем с сохранённой сцены (если есть и она валидна), иначе с пролога.
   const [currentSceneId, setCurrentSceneId] = useState(() => {
     const saved = loadSave();
@@ -120,25 +134,39 @@ function GamePage({ onLogout }: GamePageProps) {
   const shownSprite = reaction ?? currentScene.sprite;
   const isChapterEnd = currentScene.id === "chapter_end";
 
+  // Локализованные текст сцены и имя говорящего (у героя — имя ГГ).
+  const sceneText =
+    language === "ru" ? currentScene.textRu ?? currentScene.text : currentScene.text;
+  const speakerName =
+    currentScene.speaker === "hero"
+      ? mcName || t.you
+      : language === "ru"
+        ? speaker.nameRu ?? speaker.name
+        : speaker.name;
+
   // ---- Итог главы ----
-  const character =
+  const characterLabel =
     stats.boldScore === stats.softScore
-      ? "Balanced"
+      ? t.charBalanced
       : stats.boldScore > stats.softScore
-        ? "Defiant"
-        : "Gentle";
+        ? t.charDefiant
+        : t.charGentle;
   // Порядок важен для ничьих: близнецы и Леонард тоже могут стать фаворитом, а не всегда Кай.
   const bonds = [
-    { name: "the Vern twins", score: stats.twinsScore },
-    { name: "Leonard", score: stats.leonardScore },
-    { name: "Kai", score: stats.kaiScore },
-    { name: "Viktor", score: stats.viktorScore },
+    { name: t.bondTwins, score: stats.twinsScore },
+    { name: t.bondLeonard, score: stats.leonardScore },
+    { name: t.bondKai, score: stats.kaiScore },
+    { name: t.bondViktor, score: stats.viktorScore },
   ];
   const topBond = bonds.reduce((best, bond) => (bond.score > best.score ? bond : best));
-  const favorite = topBond.score > 0 ? topBond.name : "no one — yet";
+  const favorite = topBond.score > 0 ? topBond.name : t.noOneYet;
   const path =
-    `The ${character.toLowerCase()} road ` +
-    (topBond.score > 0 ? `toward ${topBond.name}.` : "walked alone.");
+    language === "ru"
+      ? topBond.score > 0
+        ? `${characterLabel} путь. Рядом — ${topBond.name}.`
+        : `${characterLabel} путь, пройденный в одиночестве.`
+      : `The ${characterLabel.toLowerCase()} road ` +
+        (topBond.score > 0 ? `toward ${topBond.name}.` : "walked alone.");
 
   return (
     <main
@@ -162,6 +190,8 @@ function GamePage({ onLogout }: GamePageProps) {
 
         {showProfile && (
           <ProfilePanel
+            language={language}
+            onChangeLanguage={onChangeLanguage}
             onClose={() => setShowProfile(false)}
             onLogout={() => {
               setShowProfile(false);
@@ -195,40 +225,42 @@ function GamePage({ onLogout }: GamePageProps) {
         )}
 
         <header className="game-top-panel">
-          <p className="game-label">Chapter One</p>
-          <h1>Archive of Scarlet Letters</h1>
+          <p className="game-label">{t.chapterOne}</p>
+          <h1>{t.gameTitle}</h1>
         </header>
 
         <div className="game-content">
           <DialogueBox
-            speakerName={speaker.name}
-            text={currentScene.text}
+            speakerName={speakerName}
+            text={sceneText}
             showNextButton={Boolean(currentScene.nextSceneId)}
+            nextHintText={t.clickToContinue}
           />
 
           {currentScene.choices && (
             <ChoiceList
               choices={currentScene.choices}
               onSelectChoice={selectChoice}
+              language={language}
             />
           )}
 
           {isChapterEnd && (
             <section className="chapter-result">
-              <p className="chapter-result-label">End of Chapter One</p>
-              <h2>The First Day in the City</h2>
+              <p className="chapter-result-label">{t.endOfChapter}</p>
+              <h2>{t.chapterSubtitle}</h2>
               <div className="chapter-result-stats">
                 <p>
-                  Favorite — <strong>{favorite}</strong>
+                  {t.favorite} — <strong>{favorite}</strong>
                 </p>
                 <p>
-                  Character — <strong>{character}</strong>
+                  {t.character} — <strong>{characterLabel}</strong>
                 </p>
                 <p>
-                  Path — <em>{path}</em>
+                  {t.path} — <em>{path}</em>
                 </p>
               </div>
-              <p className="chapter-result-note">To be continued…</p>
+              <p className="chapter-result-note">{t.toBeContinued}</p>
             </section>
           )}
         </div>

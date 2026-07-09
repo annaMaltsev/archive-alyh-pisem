@@ -1,18 +1,12 @@
+import type { Lang } from "../../features/i18n/strings";
 import "../authFlow.css";
 
-// Выбор языка (английский / русский). Сохраняем локально.
+// Выбор языка (английский / русский). Экран двуязычный — намеренно.
 type LanguagePageProps = {
-  onDone: () => void;
+  onChoose: (lang: Lang) => void;
 };
 
-const LANGUAGE_KEY = "asl_language";
-
-function LanguagePage({ onDone }: LanguagePageProps) {
-  const choose = (lang: "en" | "ru") => {
-    localStorage.setItem(LANGUAGE_KEY, lang);
-    onDone();
-  };
-
+function LanguagePage({ onChoose }: LanguagePageProps) {
   return (
     <main className="flow-page">
       <div className="flow-card">
@@ -21,10 +15,10 @@ function LanguagePage({ onDone }: LanguagePageProps) {
         <p className="flow-sub">Выберите язык</p>
 
         <div className="flow-choices">
-          <button className="flow-choice" type="button" onClick={() => choose("en")}>
+          <button className="flow-choice" type="button" onClick={() => onChoose("en")}>
             English
           </button>
-          <button className="flow-choice" type="button" onClick={() => choose("ru")}>
+          <button className="flow-choice" type="button" onClick={() => onChoose("ru")}>
             Русский
           </button>
         </div>

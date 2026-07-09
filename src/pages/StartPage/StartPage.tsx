@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+import type { Lang } from "../../features/i18n/strings";
+import { strings } from "../../features/i18n/strings";
 import "./StartPage.css";
 
-// Пропсы — входные данные компонента. Нужна одна функция: что делать по кнопке Start.
+// Пропсы — входные данные компонента.
 type StartPageProps = {
   onStart: () => void;
+  language: Lang;
 };
 
-function StartPage({ onStart }: StartPageProps) {
+function StartPage({ onStart, language }: StartPageProps) {
+  const t = strings[language];
   // isAlt — поза Кая: false обычная, true вторая (на пару секунд по клику).
   const [isAlt, setIsAlt] = useState(false);
   // showWelcome — показывать ли уведомление-приветствие.
@@ -52,9 +56,8 @@ function StartPage({ onStart }: StartPageProps) {
       {/* Ряд кнопок: Start и Continue */}
       <div className="start-buttons">
         <button className="start-button" onClick={onStart}>
-          Enter the Archive
+          {t.enterArchive}
         </button>
-
       </div>
 
       {/* Уведомление-приветствие (как SMS) — при каждом визите */}
@@ -66,8 +69,8 @@ function StartPage({ onStart }: StartPageProps) {
         >
           <span className="welcome-toast-icon">✉</span>
           <div className="welcome-toast-body">
-            <p className="welcome-toast-title">Developer</p>
-            <p className="welcome-toast-text">Don't forget to pet Kai</p>
+            <p className="welcome-toast-title">{t.toastTitle}</p>
+            <p className="welcome-toast-text">{t.toastText}</p>
           </div>
         </div>
       )}

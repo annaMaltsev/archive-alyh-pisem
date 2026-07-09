@@ -1,10 +1,13 @@
 import { useState } from "react";
+import type { Lang } from "../../features/i18n/strings";
+import { strings } from "../../features/i18n/strings";
 import "../authFlow.css";
 
 // Регистрация/вход. ТОЛЬКО логин + пароль, никаких персональных данных (почты и т.п.).
 // Аккаунт хранится ЛОКАЛЬНО в браузере (localStorage) — ничего не уходит на сервер.
 type AuthPageProps = {
   onDone: () => void;
+  language: Lang;
 };
 
 type Account = {
@@ -14,7 +17,8 @@ type Account = {
 
 const ACCOUNT_KEY = "asl_account";
 
-function AuthPage({ onDone }: AuthPageProps) {
+function AuthPage({ onDone, language }: AuthPageProps) {
+  const t = strings[language];
   // Если аккаунт уже создан — сразу режим «вход», иначе «регистрация».
   const [mode, setMode] = useState<"register" | "login">(() =>
     localStorage.getItem(ACCOUNT_KEY) ? "login" : "register",
@@ -29,11 +33,11 @@ function AuthPage({ onDone }: AuthPageProps) {
 
     const cleanLogin = login.trim();
     if (cleanLogin.length < 3) {
-      setError("Login must be at least 3 characters.");
+      setError(t.errLoginShort);
       return;
     }
     if (password.length < 4) {
-      setError("Password must be at least 4 characters.");
+      setError(t.errPassShort);
       return;
     }
 
@@ -46,14 +50,13 @@ function AuthPage({ onDone }: AuthPageProps) {
       return;
     }
 
-    // Вход: сверяем с сохранённым аккаунтом.
     if (!stored) {
-      setError("No account found on this device. Please register.");
+      setError(t.errNoAccount);
       return;
     }
     const account = JSON.parse(stored) as Account;
     if (account.login !== cleanLogin || account.password !== password) {
-      setError("Wrong login or password.");
+      setError(t.errWrong);
       return;
     }
     onDone();
@@ -64,12 +67,13 @@ function AuthPage({ onDone }: AuthPageProps) {
       <div className="flow-card">
         <p className="flow-eyebrow">Archive of Scarlet Letters</p>
         <h1 className="flow-title">
-          {mode === "register" ? "Create your account" : "Welcome back"}
+          {mode === "register" ? t.authCreateTitle : t.authWelcomeTitle}
         </h1>
+        <p className="flow-sub">{t.authNote}</p>
 
         <form className="flow-form" onSubmit={submit}>
           <label className="flow-field">
-            <span>Login</span>
+            <span>{t.login}</span>
             <input
               className="flow-input"
               value={login}
@@ -80,7 +84,7 @@ function AuthPage({ onDone }: AuthPageProps) {
           </label>
 
           <label className="flow-field">
-            <span>Password</span>
+            <span>{t.password}</span>
             <input
               className="flow-input"
               type="password"
@@ -94,7 +98,7 @@ function AuthPage({ onDone }: AuthPageProps) {
           {error && <p className="flow-error">{error}</p>}
 
           <button className="flow-button" type="submit">
-            {mode === "register" ? "Create account" : "Log in"}
+            {mode === "register" ? t.createAccount : t.logIn}
           </button>
         </form>
 
@@ -106,9 +110,7 @@ function AuthPage({ onDone }: AuthPageProps) {
             setError("");
           }}
         >
-          {mode === "register"
-            ? "Already have an account? Log in"
-            : "Need an account? Register"}
+          {mode === "register" ? t.toggleToLogin : t.toggleToRegister}
         </button>
       </div>
     </main>

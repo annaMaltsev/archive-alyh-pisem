@@ -1,16 +1,20 @@
 import { useState } from "react";
+import type { Lang } from "../../features/i18n/strings";
+import { strings } from "../../features/i18n/strings";
 import "../authFlow.css";
 
 // Создание персонажа игрока (ГГ): имя + пол. Сохраняем локально.
 type McCreatePageProps = {
   onDone: () => void;
+  language: Lang;
 };
 
 type Gender = "male" | "female";
 
 const MC_KEY = "asl_mc";
 
-function McCreatePage({ onDone }: McCreatePageProps) {
+function McCreatePage({ onDone, language }: McCreatePageProps) {
+  const t = strings[language];
   const [name, setName] = useState("");
   const [gender, setGender] = useState<Gender | "">("");
   const [error, setError] = useState("");
@@ -21,11 +25,11 @@ function McCreatePage({ onDone }: McCreatePageProps) {
 
     const cleanName = name.trim();
     if (cleanName.length < 1) {
-      setError("Please enter a name.");
+      setError(t.errName);
       return;
     }
     if (!gender) {
-      setError("Please choose a gender.");
+      setError(t.errGender);
       return;
     }
 
@@ -37,12 +41,12 @@ function McCreatePage({ onDone }: McCreatePageProps) {
     <main className="flow-page">
       <div className="flow-card">
         <p className="flow-eyebrow">Archive of Scarlet Letters</p>
-        <h1 className="flow-title">Create your character</h1>
-        <p className="flow-sub">This is who returns to Veilmore.</p>
+        <h1 className="flow-title">{t.mcTitle}</h1>
+        <p className="flow-sub">{t.mcSub}</p>
 
         <form className="flow-form" onSubmit={submit}>
           <label className="flow-field">
-            <span>Name</span>
+            <span>{t.name}</span>
             <input
               className="flow-input"
               value={name}
@@ -53,21 +57,21 @@ function McCreatePage({ onDone }: McCreatePageProps) {
           </label>
 
           <div className="flow-field">
-            <span>Gender</span>
+            <span>{t.gender}</span>
             <div className="flow-choices flow-choices--row">
               <button
                 type="button"
                 className={`flow-choice ${gender === "male" ? "is-selected" : ""}`}
                 onClick={() => setGender("male")}
               >
-                Male
+                {t.male}
               </button>
               <button
                 type="button"
                 className={`flow-choice ${gender === "female" ? "is-selected" : ""}`}
                 onClick={() => setGender("female")}
               >
-                Female
+                {t.female}
               </button>
             </div>
           </div>
@@ -75,7 +79,7 @@ function McCreatePage({ onDone }: McCreatePageProps) {
           {error && <p className="flow-error">{error}</p>}
 
           <button className="flow-button" type="submit">
-            Enter Veilmore
+            {t.enterVeilmore}
           </button>
         </form>
       </div>

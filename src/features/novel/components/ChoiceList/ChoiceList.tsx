@@ -1,12 +1,14 @@
 import type { Choice } from "../../types/novelTypes";
+import type { Lang } from "../../../i18n/strings";
 import "./ChoiceList.css";
 
 type ChoiceListProps = {
   choices: Choice[];
   onSelectChoice: (choice: Choice) => void;
+  language: Lang;
 };
 
-function ChoiceList({ choices, onSelectChoice }: ChoiceListProps) {
+function ChoiceList({ choices, onSelectChoice, language }: ChoiceListProps) {
   return (
     <div className="choice-list">
       {choices.map((choice) => (
@@ -15,7 +17,7 @@ function ChoiceList({ choices, onSelectChoice }: ChoiceListProps) {
           className="choice-button"
           onClick={() => onSelectChoice(choice)}
         >
-          {choice.text}
+          {language === "ru" ? choice.textRu ?? choice.text : choice.text}
         </button>
       ))}
     </div>

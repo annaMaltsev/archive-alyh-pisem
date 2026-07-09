@@ -34,6 +34,7 @@ export type ChoiceEffect = Partial<GameStats>;
 export type Choice = {
   id: string;
   text: string;
+  textRu?: string; // русский перевод варианта ответа
   nextSceneId: string;
   effect?: ChoiceEffect;
 };
@@ -43,6 +44,7 @@ export type Scene = {
   background: BackgroundId;
   speaker: CharacterId;
   text: string;
+  textRu?: string; // русский перевод реплики/абзаца
   sprite?: string; // путь к спрайту персонажа (прозрачный PNG); если нет — персонаж не показывается
   nextSceneId?: string;
   choices?: Choice[];
@@ -51,5 +53,6 @@ export type Scene = {
 export type Character = {
   id: CharacterId;
   name: string;
+  nameRu?: string; // имя на русском (для русской версии)
   description: string;
 };

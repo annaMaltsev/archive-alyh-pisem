@@ -1,8 +1,12 @@
 import { useState } from "react";
+import type { Lang } from "../../features/i18n/strings";
+import { strings } from "../../features/i18n/strings";
 
 // Панель профиля: данные ГГ, логин/пароль, смена языка, выход.
 // Всё читается из localStorage (ничего не уходит на сервер).
 type ProfilePanelProps = {
+  language: Lang;
+  onChangeLanguage: (lang: Lang) => void;
   onClose: () => void;
   onLogout: () => void;
 };
@@ -16,21 +20,14 @@ function readJson<T>(key: string): T | null {
   }
 }
 
-function ProfilePanel({ onClose, onLogout }: ProfilePanelProps) {
+function ProfilePanel({ language, onChangeLanguage, onClose, onLogout }: ProfilePanelProps) {
+  const t = strings[language];
   const mc = readJson<{ name: string; gender: string }>("asl_mc");
   const account = readJson<{ login: string; password: string }>("asl_account");
-  const [language, setLanguage] = useState<string>(
-    () => localStorage.getItem("asl_language") ?? "en",
-  );
   const [showPassword, setShowPassword] = useState(false);
 
-  const chooseLang = (lang: "en" | "ru") => {
-    localStorage.setItem("asl_language", lang);
-    setLanguage(lang);
-  };
-
   const genderLabel =
-    mc?.gender === "female" ? "Female" : mc?.gender === "male" ? "Male" : "—";
+    mc?.gender === "female" ? t.female : mc?.gender === "male" ? t.male : "—";
 
   return (
     // Затемнение на весь экран. stopPropagation — чтобы клик не листал историю.
@@ -46,20 +43,20 @@ function ProfilePanel({ onClose, onLogout }: ProfilePanelProps) {
           ✕
         </button>
 
-        <p className="profile-eyebrow">Your account</p>
-        <h2 className="profile-title">Profile</h2>
+        <p className="profile-eyebrow">{t.profEyebrow}</p>
+        <h2 className="profile-title">{t.profTitle}</h2>
 
         <section className="profile-section">
-          <p className="profile-label">Character</p>
+          <p className="profile-label">{t.profCharacter}</p>
           <p className="profile-value">{mc?.name ?? "—"}</p>
           <p className="profile-sub">{genderLabel}</p>
         </section>
 
         <section className="profile-section">
-          <p className="profile-label">Login</p>
+          <p className="profile-label">{t.login}</p>
           <p className="profile-value">{account?.login ?? "—"}</p>
 
-          <p className="profile-label">Password</p>
+          <p className="profile-label">{t.password}</p>
           <p className="profile-value">
             <span className="profile-password">
               {account
@@ -73,24 +70,24 @@ function ProfilePanel({ onClose, onLogout }: ProfilePanelProps) {
                 className="profile-toggle"
                 onClick={() => setShowPassword((value) => !value)}
               >
-                {showPassword ? "hide" : "show"}
+                {showPassword ? t.hide : t.show}
               </button>
             )}
           </p>
         </section>
 
         <section className="profile-section">
-          <p className="profile-label">Language</p>
+          <p className="profile-label">{t.profLanguage}</p>
           <div className="profile-lang">
             <button
               className={`profile-lang-btn ${language === "en" ? "is-selected" : ""}`}
-              onClick={() => chooseLang("en")}
+              onClick={() => onChangeLanguage("en")}
             >
               English
             </button>
             <button
               className={`profile-lang-btn ${language === "ru" ? "is-selected" : ""}`}
-              onClick={() => chooseLang("ru")}
+              onClick={() => onChangeLanguage("ru")}
             >
               Русский
             </button>
@@ -98,7 +95,7 @@ function ProfilePanel({ onClose, onLogout }: ProfilePanelProps) {
         </section>
 
         <button className="profile-logout" onClick={onLogout}>
-          Log out
+          {t.logOut}
         </button>
       </aside>
     </div>
