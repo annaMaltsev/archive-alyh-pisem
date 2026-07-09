@@ -83,7 +83,8 @@
   max-height: 76vh;
   width: auto;
   z-index: 1;
-  pointer-events: none;
+  pointer-events: auto; /* по персонажу можно кликнуть — он реагирует */
+  cursor: pointer;
   filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.6));
   animation: sprite-in 0.35s ease;
 }

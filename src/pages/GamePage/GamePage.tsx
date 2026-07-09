@@ -16,10 +16,23 @@ const initialStats: GameStats = {
   viktorScore: 0,
 };
 
+// Клик по персонажу → короткая «реакция» (другая эмоция). Пара база → реакция.
+const reactionSprites: Record<string, string> = {
+  "/images/characters/kai-neutral.png": "/images/characters/kai-worried.png",
+  "/images/characters/kai-worried.png": "/images/characters/kai-neutral.png",
+  "/images/characters/leonard-neutral.png": "/images/characters/leonard-annoyed.png",
+  "/images/characters/leonard-annoyed.png": "/images/characters/leonard-neutral.png",
+  "/images/characters/ellian-1.png": "/images/characters/ellian-2.png",
+  "/images/characters/noel-1.png": "/images/characters/noel-2.png",
+  "/images/characters/kai-touched.png": "/images/characters/kai-worried.png",
+  "/images/characters/leonard-sleepy.png": "/images/characters/leonard-annoyed.png",
+};
+
 function GamePage() {
-  // Текущая сцена (по id) и накопленные очки.
   const [currentSceneId, setCurrentSceneId] = useState("prologue_1");
   const [stats, setStats] = useState<GameStats>(initialStats);
+  // Временный спрайт-реакция (когда кликнули по персонажу).
+  const [reaction, setReaction] = useState<string | null>(null);
 
   const currentScene = chapter1Scenes.find((scene) => scene.id === currentSceneId);
 
@@ -30,13 +43,14 @@ function GamePage() {
   const speaker = characters[currentScene.speaker];
 
   const goNext = () => {
+    setReaction(null);
     if (currentScene.nextSceneId) {
       setCurrentSceneId(currentScene.nextSceneId);
     }
   };
 
   const selectChoice = (choice: Choice) => {
-    // Прибавляем к очкам все поля, что есть в effect (универсально, без перечисления).
+    setReaction(null);
     if (choice.effect) {
       setStats((previous) => {
         const next = { ...previous };
@@ -49,44 +63,52 @@ function GamePage() {
     setCurrentSceneId(choice.nextSceneId);
   };
 
+  // Клик по персонажу: показать реакцию на ~1.2с. stopPropagation — чтобы НЕ листать историю.
+  const handleCharacterClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (reaction || !currentScene.sprite) return;
+    const next = reactionSprites[currentScene.sprite];
+    if (!next) return;
+    setReaction(next);
+    setTimeout(() => setReaction(null), 1200);
+  };
+
+  const shownSprite = reaction ?? currentScene.sprite;
   const isChapterEnd = currentScene.id === "chapter_end";
 
-  // ---- Итог главы: характер, фаворит и путь по накопленным очкам ----
+  // ---- Итог главы ----
   const character =
     stats.boldScore === stats.softScore
       ? "Balanced"
       : stats.boldScore > stats.softScore
         ? "Defiant"
         : "Gentle";
-
   const bonds = [
     { name: "Kai", score: stats.kaiScore },
     { name: "Leonard", score: stats.leonardScore },
     { name: "the Vern twins", score: stats.twinsScore },
     { name: "Viktor", score: stats.viktorScore },
   ];
-  const topBond = bonds.reduce((best, bond) =>
-    bond.score > best.score ? bond : best
-  );
+  const topBond = bonds.reduce((best, bond) => (bond.score > best.score ? bond : best));
   const favorite = topBond.score > 0 ? topBond.name : "no one — yet";
   const path =
     `The ${character.toLowerCase()} road ` +
     (topBond.score > 0 ? `toward ${topBond.name}.` : "walked alone.");
 
   return (
-    // Клик по любому месту экрана продвигает историю вперёд.
+    // Клик по любому месту (кроме персонажа) продвигает историю вперёд.
     <main
       className={`game-page background-${currentScene.background}`}
       onClick={goNext}
     >
       <div className="game-page-overlay">
-        {/* Спрайт персонажа (если задан у сцены). key — чтобы при смене плавно появлялся. */}
-        {currentScene.sprite && (
+        {shownSprite && (
           <img
             className="game-character"
-            src={currentScene.sprite}
+            src={shownSprite}
             alt=""
-            key={currentScene.sprite}
+            key={shownSprite}
+            onClick={handleCharacterClick}
             onError={(event) => {
               event.currentTarget.style.display = "none";
             }}
@@ -116,7 +138,6 @@ function GamePage() {
             <section className="chapter-result">
               <p className="chapter-result-label">End of Chapter One</p>
               <h2>The First Day in the City</h2>
-
               <div className="chapter-result-stats">
                 <p>
                   Favorite — <strong>{favorite}</strong>
@@ -128,7 +149,6 @@ function GamePage() {
                   Path — <em>{path}</em>
                 </p>
               </div>
-
               <p className="chapter-result-note">To be continued…</p>
             </section>
           )}

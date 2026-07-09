@@ -13,6 +13,8 @@ const ELIAN = "/images/characters/ellian-1.png";
 const NOEL = "/images/characters/noel-1.png";
 const KAI = "/images/characters/kai-neutral.png";
 const KAI_WORRIED = "/images/characters/kai-worried.png";
+const KAI_TOUCHED = "/images/characters/kai-touched.png";
+const LEONARD_SLEEPY = "/images/characters/leonard-sleepy.png";
 
 export const chapter1Scenes: Scene[] = [
   // ---------- PROLOGUE (одним абзацем) ----------
@@ -129,7 +131,7 @@ export const chapter1Scenes: Scene[] = [
     id: "leonard_after",
     background: "kitchen",
     speaker: "leonard",
-    sprite: LEONARD,
+    sprite: LEONARD_SLEEPY,
     text: "Eat. The academy doesn't wait, and I won't walk you there.",
     nextSceneId: "street_1",
   },
@@ -263,7 +265,7 @@ export const chapter1Scenes: Scene[] = [
     id: "kai_4",
     background: "hall",
     speaker: "kai",
-    sprite: KAI,
+    sprite: KAI_TOUCHED,
     text: "You really don't remember.",
     nextSceneId: "kai_5",
   },
@@ -271,7 +273,7 @@ export const chapter1Scenes: Scene[] = [
     id: "kai_5",
     background: "hall",
     speaker: "hero",
-    sprite: KAI,
+    sprite: KAI_TOUCHED,
     text: "I remember a garden. And a boy who kept pretending he wasn't scared.",
     nextSceneId: "kai_6",
   },
@@ -279,7 +281,7 @@ export const chapter1Scenes: Scene[] = [
     id: "kai_6",
     background: "hall",
     speaker: "kai",
-    sprite: KAI,
+    sprite: KAI_WORRIED,
     text: "Then you remember enough to stay away from him.",
     choices: [
       {
@@ -306,7 +308,7 @@ export const chapter1Scenes: Scene[] = [
     id: "kai_from",
     background: "hall",
     speaker: "kai",
-    sprite: KAI,
+    sprite: KAI_TOUCHED,
     text: "From all of it. From me most of all.",
     nextSceneId: "kai_after",
   },
@@ -322,7 +324,7 @@ export const chapter1Scenes: Scene[] = [
     id: "kai_hide",
     background: "hall",
     speaker: "kai",
-    sprite: KAI,
+    sprite: KAI_WORRIED,
     text: "Everyone hides here. The ones who swear they don't are just the first to disappear.",
     nextSceneId: "kai_after",
   },
