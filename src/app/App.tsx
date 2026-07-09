@@ -16,26 +16,46 @@ type Screen = "start" | "auth" | "language" | "mc" | "game" | "coming";
 
 function app() {
   const [screen, setScreen] = useState<Screen>("start");
+  // Вошёл ли пользователь В ЭТОТ ЗАПУСК. При перезагрузке сбрасывается —
+  // поэтому при новом запуске снова просим войти (логин+пароль), а прогресс не теряется.
+  const [authed, setAuthed] = useState(false);
 
-  // Кнопка на главной. Если пользователь уже прошёл регистрацию и создал ГГ —
-  // сразу пускаем в игру. Иначе ведём через регистрацию.
+  // Кнопка на главной.
   const handleStart = () => {
     if (UNDER_CONSTRUCTION) {
       setScreen("coming");
       return;
     }
     const hasAccount = Boolean(localStorage.getItem("asl_account"));
+    // Уже вошёл в этой сессии → сразу в игру (продолжит с сохранения).
+    if (hasAccount && authed) {
+      setScreen("game");
+      return;
+    }
+    // Нет аккаунта → регистрация; аккаунт есть, но не вошёл → вход.
+    setScreen("auth");
+  };
+
+  // После регистрации/входа: новый игрок идёт создавать ГГ, вернувшийся — сразу в игру.
+  const handleAuthDone = () => {
+    setAuthed(true);
     const hasMc = Boolean(localStorage.getItem("asl_mc"));
-    setScreen(hasAccount && hasMc ? "game" : "auth");
+    setScreen(hasMc ? "game" : "language");
+  };
+
+  // Выход из аккаунта: возвращаемся на главную, прогресс и аккаунт сохраняются.
+  const handleLogout = () => {
+    setAuthed(false);
+    setScreen("start");
   };
 
   return (
     <>
       {screen === "start" && <StartPage onStart={handleStart} />}
-      {screen === "auth" && <AuthPage onDone={() => setScreen("language")} />}
+      {screen === "auth" && <AuthPage onDone={handleAuthDone} />}
       {screen === "language" && <LanguagePage onDone={() => setScreen("mc")} />}
       {screen === "mc" && <McCreatePage onDone={() => setScreen("game")} />}
-      {screen === "game" && <GamePage />}
+      {screen === "game" && <GamePage onLogout={handleLogout} />}
       {screen === "coming" && <ComingSoonPage />}
     </>
   );

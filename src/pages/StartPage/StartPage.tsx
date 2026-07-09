@@ -12,10 +12,6 @@ function StartPage({ onStart }: StartPageProps) {
   // showWelcome — показывать ли уведомление-приветствие.
   const [showWelcome, setShowWelcome] = useState(false);
 
-  // Есть ли сохранённый прогресс — для кнопки Continue.
-  // Пока сохранений нет, поэтому кнопка будет неактивной. Появится сохранение — «загорится».
-  const hasSave = Boolean(localStorage.getItem("asl_save"));
-
   // Уведомление показываем при КАЖДОМ заходе на главную (без запоминания).
   useEffect(() => {
     setShowWelcome(true);
