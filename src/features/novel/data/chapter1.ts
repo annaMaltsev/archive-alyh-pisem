@@ -22,9 +22,9 @@ export const chapter1Scenes: Scene[] = [
     id: "prologue_1",
     background: "prologue",
     speaker: "narrator",
-    text: "As a child, I was taken away from this city. I remember almost nothing of it — only wet stone, scarlet lanterns, and a garden behind a high fence. Now my parents are dead, and all they left behind was an old address, a single name — Leonard Veil — and a city they had never once spoken of. I'm not coming back to Veilmore for answers. I simply have nowhere else to go.",
+    text: "They took me away from this city when I was a child. I remember almost nothing of it — wet stone, scarlet lanterns, a garden behind a high fence. Now my parents are dead, and all they left me was an old address, a single name — Leonard Veil — and a city they never once spoke of. I'm not returning to Veilmore for answers. I simply have nowhere else to go.",
     textRu:
-      "Ещё ребёнком меня увезли из этого города. Я почти ничего о нём не помню — только мокрый камень, алые фонари да сад за высокой оградой. Теперь родителей больше нет, и всё, что от них осталось, — старый адрес, одно-единственное имя, Леонард Вейл, и город, о котором они не обмолвились ни словом. Я возвращаюсь в Вейльмор не за ответами. Мне просто больше некуда идти.",
+      "Меня увезли из этого города ещё ребёнком. Я почти ничего о нём не помню — мокрый камень, алые фонари, сад за высокой оградой. Теперь родителей больше нет, и всё, что они мне оставили, — старый адрес, одно-единственное имя — Леонард Вейл — и город, о котором они не обмолвились ни словом. Я возвращаюсь в Вейльмор не за ответами. Мне просто больше некуда идти.",
     nextSceneId: "transition_1",
   },
 
@@ -33,9 +33,9 @@ export const chapter1Scenes: Scene[] = [
     id: "transition_1",
     background: "room",
     speaker: "narrator",
-    text: "Rain crept down the window. The scarlet light bled through the glass, blurred, thinned — and slowly turned to morning.",
+    text: "Rain crept down the window. Scarlet light bled through it, blurred, thinned — and slowly turned into morning.",
     textRu:
-      "Дождь сползал по стеклу. Алый свет сочился сквозь стекло, расплывался, редел — и медленно превращался в утро.",
+      "Дождь сползал по стеклу. Алый свет сочился сквозь него, расплывался, редел — и медленно превращался в утро.",
     nextSceneId: "morning_1",
   },
 
@@ -44,9 +44,9 @@ export const chapter1Scenes: Scene[] = [
     id: "morning_1",
     background: "room",
     speaker: "narrator",
-    text: "For a moment I didn't know where I was. Then I saw the uniform folded over the chair, the rain on the glass, the shelves of books I hadn't been given leave to touch — and it came back to me. Veilmore. I had really come. The room had been made ready for me in advance, and somehow that only made it lonelier.",
+    text: "For a moment I didn't know where I was. Then I saw the uniform folded over the chair, the rain on the glass, the shelves of books that weren't mine to touch — and it all came back. Veilmore. I had really come. The room had been prepared for me long before I arrived, and somehow that only made it lonelier.",
     textRu:
-      "Первое мгновение я не понимал, где нахожусь. Потом увидел форму, сложенную на спинке стула, дождь на стекле, полки с книгами, которых мне не позволено было касаться, — и всё вернулось. Вейльмор. Я и правда приехал. Комнату приготовили заранее, и почему-то от этого становилось только более одиноко.",
+      "Первое мгновение я не понимал, где нахожусь. Потом увидел форму, аккуратно сложенную на спинке стула, дождь на стекле, полки чужих книг, к которым не смел прикоснуться, — и всё вернулось. Вейльмор. Я действительно приехал. Комнату приготовили задолго до моего появления — и почему-то от этого становилось только тоскливее.",
     nextSceneId: "kitchen_intro",
   },
 
@@ -55,8 +55,8 @@ export const chapter1Scenes: Scene[] = [
     id: "kitchen_intro",
     background: "kitchen",
     speaker: "narrator",
-    text: "From the next room came a voice — low, even, and long since awake.",
-    textRu: "Из соседней комнаты донёсся голос — низкий, ровный, давно уже не спящий.",
+    text: "From the next room came a voice — low, even, the voice of a man long since awake.",
+    textRu: "Из соседней комнаты донёсся голос — низкий, ровный. Голос человека, который давно не спит.",
     nextSceneId: "leonard_1",
   },
   {
@@ -94,7 +94,7 @@ export const chapter1Scenes: Scene[] = [
     speaker: "leonard",
     sprite: LEONARD,
     text: "Your parents didn't leave me the luxury of improvising.",
-    textRu: "Твои родители не оставили мне роскоши импровизировать.",
+    textRu: "Твои родители не оставили мне права на импровизацию.",
     choices: [
       {
         id: "c1_soft",
@@ -126,7 +126,7 @@ export const chapter1Scenes: Scene[] = [
     sprite: LEONARD,
     text: "Gratitude is cheap. But it's a start. Just don't make me regret the room.",
     textRu:
-      "Благодарность ничего не стоит. Но это уже начало. Только не заставляй меня жалеть о комнате.",
+      "Благодарность ничего не стоит. Но это уже начало. Только не заставь меня пожалеть о комнате.",
     nextSceneId: "leonard_after",
   },
   {
@@ -164,9 +164,9 @@ export const chapter1Scenes: Scene[] = [
     id: "street_1",
     background: "street",
     speaker: "narrator",
-    text: "Even by daylight, Veilmore after rain was hushed and lit like gold. Wet stone, scarlet lanterns still burning against the grey, and the same four crests cut above every door that mattered. I didn't know what they meant — and yet something in me did. Every corner felt like a word in a language I'd forgotten I could read.",
+    text: "Even by daylight, Veilmore after the rain felt hushed and gilded. Wet stone, scarlet lanterns still burning against the grey, and the same four crests carved above every door that mattered. I didn't know what they meant — and yet something in me did. Every corner felt like a word in a language I'd forgotten I could read.",
     textRu:
-      "Даже днём Вейльмор после дождя был приглушён и словно позолочен. Мокрый камень, алые фонари, всё ещё горящие на фоне серого, и одни и те же четыре герба, высеченные над каждой дверью, что хоть что-то значила. Я не знал, что они означают, — и всё же что-то во мне знало. Каждый поворот казался словом на языке, который я, оказывается, ещё умею читать.",
+      "Даже днём Вейльмор после дождя казался приглушённым и словно позолоченным. Мокрый камень, алые фонари, всё ещё горящие на фоне серого неба, и одни и те же четыре герба, высеченные над каждой дверью, которая хоть что-то значила. Я не знал, что они означают, — и всё же что-то во мне знало. Каждый поворот был словом на языке, который я, оказывается, так и не разучился читать.",
     nextSceneId: "hall_intro",
   },
 
@@ -195,9 +195,9 @@ export const chapter1Scenes: Scene[] = [
     background: "hall",
     speaker: "narrator",
     sprite: ELIAN,
-    text: "All of it easy charm — bright, amused, a little too quick. Behind him stood a second face, almost the same and not at all: quieter, watchful, unmoving.",
+    text: "It was all easy charm — bright, amused, a little too quick. And behind him, a second face: almost the same, and nothing alike. Quieter. Watchful. Still.",
     textRu:
-      "Сплошное лёгкое обаяние — яркое, насмешливое, чуть слишком быстрое. За ним стояло второе лицо — почти такое же и совсем другое: тише, внимательнее, неподвижное.",
+      "Сплошное лёгкое обаяние — яркое, насмешливое, чуть слишком быстрое. А за его плечом — второе лицо: почти то же самое и совершенно другое. Тише. Внимательнее. Неподвижнее.",
     nextSceneId: "noel_1",
   },
   {
@@ -247,7 +247,7 @@ export const chapter1Scenes: Scene[] = [
     sprite: ELIAN,
     text: "See? He gets it. Around here we call a lot of things by names they don't deserve. You'll fit right in.",
     textRu:
-      "Видишь? Он понимает. Здесь многое зовут именами, которых оно не заслуживает. Ты отлично впишешься.",
+      "Видишь? Он понимает. Здесь многим вещам дают имена, которых они не заслуживают. Ты отлично впишешься.",
     nextSceneId: "twins_after",
   },
   {
@@ -381,9 +381,9 @@ export const chapter1Scenes: Scene[] = [
     background: "hall",
     speaker: "kai",
     sprite: KAI_ANNOYED,
-    text: "Everyone hides here. The ones who swear they don't are only the first to disappear.",
+    text: "Everyone hides here. The ones who swear they don't are the first to disappear.",
     textRu:
-      "Здесь прячутся все. А те, кто клянётся, что нет, лишь первыми и исчезают.",
+      "Здесь прячутся все. А те, кто клянётся, что не прячется, исчезают первыми.",
     nextSceneId: "kai_after",
   },
   {
@@ -402,9 +402,9 @@ export const chapter1Scenes: Scene[] = [
     id: "locker",
     background: "lockers",
     speaker: "narrator",
-    text: "The corridor of lockers was almost empty. Mine opened with a dry click — no books, no belongings, nothing that should have been mine. And yet something waited inside: an envelope. Old paper, a scarlet wax seal, still unbroken. My first day, and someone already knew my locker, my schedule, my name. I broke the seal. Inside was a single line, pressed too hard into the paper:",
+    text: "The locker corridor was almost empty. Mine opened with a dry click — bare, the way a first-day locker should be. And yet something was waiting inside: an envelope. Old paper, a scarlet wax seal, still unbroken. My first day — and someone already knew my locker, my schedule, my name. I broke the seal. Inside, a single line, pressed too hard into the paper:",
     textRu:
-      "Коридор со шкафчиками был почти пуст. Мой открылся с сухим щелчком — ни книг, ни вещей, ничего, что принадлежало бы мне. И всё же внутри что-то ждало: конверт. Старая бумага, алая восковая печать, ещё не сломанная. Мой первый день — а кто-то уже знал мой шкафчик, моё расписание, моё имя. Я сломал печать. Внутри была одна строка, вдавленная в бумагу слишком сильно:",
+      "Коридор со шкафчиками был почти пуст. Мой открылся с сухим щелчком — пустой, каким и положено быть шкафчику в первый день. И всё же внутри что-то ждало: конверт. Старая бумага, алая восковая печать — ещё целая. Мой первый день — а кто-то уже знал мой шкафчик, моё расписание, моё имя. Я сломал печать. Внутри — единственная строка, вдавленная в бумагу слишком сильно:",
     nextSceneId: "letter_2",
   },
   {
@@ -412,7 +412,7 @@ export const chapter1Scenes: Scene[] = [
     background: "cgletter",
     speaker: "narrator",
     text: "“Your name was already here. Ask why it was erased.”",
-    textRu: "«Твоё имя уже было здесь. Спроси, почему его стёрли.»",
+    textRu: "«Твоё имя уже было здесь. Спроси, почему его стёрли».",
     nextSceneId: "letter_3",
   },
   {
@@ -460,7 +460,7 @@ export const chapter1Scenes: Scene[] = [
     speaker: "kai",
     sprite: KAI_WORRIED,
     text: "Then you've already made your first mistake today.",
-    textRu: "Значит, ты уже совершил свою первую ошибку за сегодня.",
+    textRu: "Значит, свою первую ошибку ты сегодня уже совершил.",
     nextSceneId: "chapter_end",
   },
   {
