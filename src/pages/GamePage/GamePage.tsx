@@ -111,6 +111,15 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
     setCurrentSceneId(choice.nextSceneId);
   };
 
+  // Переиграть главу заново: сброс на начало и обнуление очков.
+  const handleReplayChapter = () => {
+    setReaction(null);
+    setProtector(false);
+    setShowProfile(false);
+    setStats(initialStats);
+    setCurrentSceneId("prologue_1");
+  };
+
   const handleCharacterClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     if (!currentScene.sprite) return;
@@ -192,6 +201,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
           <ProfilePanel
             language={language}
             onChangeLanguage={onChangeLanguage}
+            onReplayChapter={handleReplayChapter}
             onClose={() => setShowProfile(false)}
             onLogout={() => {
               setShowProfile(false);

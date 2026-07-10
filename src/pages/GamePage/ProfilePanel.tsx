@@ -7,6 +7,7 @@ import { strings } from "../../features/i18n/strings";
 type ProfilePanelProps = {
   language: Lang;
   onChangeLanguage: (lang: Lang) => void;
+  onReplayChapter: () => void;
   onClose: () => void;
   onLogout: () => void;
 };
@@ -20,7 +21,13 @@ function readJson<T>(key: string): T | null {
   }
 }
 
-function ProfilePanel({ language, onChangeLanguage, onClose, onLogout }: ProfilePanelProps) {
+function ProfilePanel({
+  language,
+  onChangeLanguage,
+  onReplayChapter,
+  onClose,
+  onLogout,
+}: ProfilePanelProps) {
   const t = strings[language];
   const mc = readJson<{ name: string; gender: string }>("asl_mc");
   const account = readJson<{ login: string; password: string }>("asl_account");
@@ -92,6 +99,13 @@ function ProfilePanel({ language, onChangeLanguage, onClose, onLogout }: Profile
               Русский
             </button>
           </div>
+        </section>
+
+        <section className="profile-section">
+          <p className="profile-label">{t.profChapter}</p>
+          <button className="profile-replay" onClick={onReplayChapter}>
+            {t.replayChapter}
+          </button>
         </section>
 
         <button className="profile-logout" onClick={onLogout}>

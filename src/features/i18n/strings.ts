@@ -58,6 +58,8 @@ export type UiStrings = {
   profTitle: string;
   profCharacter: string;
   profLanguage: string;
+  profChapter: string;
+  replayChapter: string;
   show: string;
   hide: string;
   logOut: string;
@@ -111,6 +113,8 @@ const en: UiStrings = {
   profTitle: "Profile",
   profCharacter: "Character",
   profLanguage: "Language",
+  profChapter: "Chapter One",
+  replayChapter: "Replay chapter",
   show: "show",
   hide: "hide",
   logOut: "Log out",
@@ -164,6 +168,8 @@ const ru: UiStrings = {
   profTitle: "Профиль",
   profCharacter: "Персонаж",
   profLanguage: "Язык",
+  profChapter: "Глава первая",
+  replayChapter: "Переиграть главу",
   show: "показать",
   hide: "скрыть",
   logOut: "Выйти",
