@@ -35,6 +35,22 @@
 .background-cgletter {
   background-image: url("/images/backgrounds/CGLetterPhone.png");
 }
+/* Фоны главы 2 (телефон) */
+.background-corridor {
+  background-image: url("/images/backgrounds/corridorPhone.png");
+}
+.background-archive {
+  background-image: url("/images/backgrounds/archivePhone.png");
+}
+.background-map {
+  background-image: url("/images/backgrounds/mapPhone.png");
+}
+.background-garden {
+  background-image: url("/images/backgrounds/gardenPhone.png");
+}
+.background-apartment {
+  background-image: url("/images/backgrounds/apartmentPhone.png");
+}
 
 @media (min-width: 860px) {
   .background-prologue {
@@ -57,6 +73,22 @@
   }
   .background-cgletter {
     background-image: url("/images/backgrounds/CGLetter.png");
+  }
+  /* Фоны главы 2 (широкий экран) */
+  .background-corridor {
+    background-image: url("/images/backgrounds/corridor.png");
+  }
+  .background-archive {
+    background-image: url("/images/backgrounds/archive.png");
+  }
+  .background-map {
+    background-image: url("/images/backgrounds/map.png");
+  }
+  .background-garden {
+    background-image: url("/images/backgrounds/garden.png");
+  }
+  .background-apartment {
+    background-image: url("/images/backgrounds/apartment.png");
   }
 
   /* На широком экране персонаж уходит ВПРАВО (в свободное место), текст — слева */
@@ -193,6 +225,29 @@
   margin: 14px 0 0;
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+/* Кнопка «Продолжить — Глава N» на экране конца главы */
+.chapter-continue {
+  margin: 20px auto 0;
+  display: inline-block;
+  padding: 13px 26px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 14px;
+  color: var(--color-cream);
+  background: linear-gradient(180deg, var(--color-maroon), var(--color-maroon-deep));
+  border: 1px solid var(--color-gold);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.1s ease;
+}
+.chapter-continue:hover {
+  box-shadow: 0 0 20px rgba(201, 168, 106, 0.5);
+}
+.chapter-continue:active {
+  transform: translateY(1px);
 }
 
 /* ===================== ИКОНКА И ПАНЕЛЬ ПРОФИЛЯ ===================== */

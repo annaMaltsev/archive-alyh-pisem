@@ -7,7 +7,7 @@ export type CharacterId =
   | "noel"
   | "viktor";
 
-// Фоны главы 1. Пока картинок нет — в GamePage.css заданы тёмные плейсхолдеры.
+// Фоны сцен. У части пока нет своих картинок — в GamePage.css стоят заглушки.
 export type BackgroundId =
   | "prologue" // фон пролога (возвращение в Вейльмор)
   | "street" // дорога к академии
@@ -15,7 +15,12 @@ export type BackgroundId =
   | "kitchen" // кухня/кабинет Леонарда
   | "hall" // холл академии
   | "lockers" // коридор со шкафчиками
-  | "cgletter"; // CG: крупный план письма
+  | "cgletter" // CG: крупный план письма
+  | "corridor" // коридор-галерея академии (гл.2)
+  | "archive" // архив академии — сцена с камерой (гл.2)
+  | "map" // крупный план старой карты (гл.2, финал)
+  | "garden" // ворота закрытого сада ночью (гл.2)
+  | "apartment"; // вечерний кабинет Леонарда (гл.2)
 
 export type GameScreen = "start" | "name" | "game";
 
@@ -46,6 +51,7 @@ export type Scene = {
   text: string;
   textRu?: string; // русский перевод реплики/абзаца
   sprite?: string; // путь к спрайту персонажа (прозрачный PNG); если нет — персонаж не показывается
+  fact?: boolean; // true → сцена-«Факт архива» (обучающая вставка, особый стиль)
   nextSceneId?: string;
   choices?: Choice[];
 };

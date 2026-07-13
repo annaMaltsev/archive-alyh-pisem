@@ -44,6 +44,8 @@ export type UiStrings = {
   toBeContinued: string;
   noOneYet: string;
   you: string;
+  continueLabel: string;
+  archiveFact: string;
   // Характер (итог главы)
   charBalanced: string;
   charDefiant: string;
@@ -94,7 +96,7 @@ const en: UiStrings = {
   chapterOne: "Chapter One",
   gameTitle: "Archive of Scarlet Letters",
   clickToContinue: "click to continue ▸",
-  endOfChapter: "End of Chapter One",
+  endOfChapter: "End of the chapter",
   chapterSubtitle: "The First Day in the City",
   favorite: "Favorite",
   character: "Character",
@@ -102,6 +104,8 @@ const en: UiStrings = {
   toBeContinued: "To be continued…",
   noOneYet: "no one — yet",
   you: "You",
+  continueLabel: "Continue",
+  archiveFact: "Archive fact",
   charBalanced: "Balanced",
   charDefiant: "Defiant",
   charGentle: "Gentle",
@@ -149,7 +153,7 @@ const ru: UiStrings = {
   chapterOne: "Глава первая",
   gameTitle: "Архив Алых Писем",
   clickToContinue: "кликните, чтобы продолжить ▸",
-  endOfChapter: "Конец первой главы",
+  endOfChapter: "Конец главы",
   chapterSubtitle: "Первый день в городе",
   favorite: "Фаворит",
   character: "Характер",
@@ -157,6 +161,8 @@ const ru: UiStrings = {
   toBeContinued: "Продолжение следует…",
   noOneYet: "пока никого",
   you: "Ты",
+  continueLabel: "Продолжить",
+  archiveFact: "Факт архива",
   charBalanced: "Уравновешенный",
   charDefiant: "Дерзкий",
   charGentle: "Мягкий",

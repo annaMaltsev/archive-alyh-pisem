@@ -20,11 +20,11 @@ function ComingSoonPage() {
   };
 
   const ellianSrc = ellianAlt
-    ? "/images/characters/ellian-2.png"
-    : "/images/characters/ellian-1.png";
+    ? "/images/characters/vern-twins/ellian-2.png"
+    : "/images/characters/vern-twins/ellian-1.png";
   const noelSrc = noelAlt
-    ? "/images/characters/noel-2.png"
-    : "/images/characters/noel-1.png";
+    ? "/images/characters/vern-twins/noel-2.png"
+    : "/images/characters/vern-twins/noel-1.png";
 
   return (
     <main className="coming-page">

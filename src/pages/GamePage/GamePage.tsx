@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { chapter1Scenes } from "../../features/novel/data/chapter1";
+import { chapters } from "../../features/novel/data/chapters";
 import { characters } from "../../features/novel/data/characters";
 import type { Choice, GameStats } from "../../features/novel/types/novelTypes";
 import type { Lang } from "../../features/i18n/strings";
@@ -24,10 +24,10 @@ const initialStats: GameStats = {
   viktorScore: 0,
 };
 
-// Ключ сохранения прогресса (сцена + очки) в браузере.
+// Ключ сохранения прогресса (глава + сцена + очки) в браузере.
 const SAVE_KEY = "asl_save";
 
-type SaveData = { sceneId: string; stats: GameStats };
+type SaveData = { chapterIndex?: number; sceneId: string; stats: GameStats };
 
 function loadSave(): SaveData | null {
   try {
@@ -41,14 +41,28 @@ function loadSave(): SaveData | null {
   return null;
 }
 
+// Достаём валидное начальное состояние из сохранения (или начало первой главы).
+function loadInitial() {
+  const saved = loadSave();
+  let chapterIndex = saved?.chapterIndex ?? 0;
+  if (chapterIndex < 0 || chapterIndex >= chapters.length) chapterIndex = 0;
+  const chapterScenes = chapters[chapterIndex].scenes;
+  const sceneId =
+    saved && chapterScenes.some((scene) => scene.id === saved.sceneId)
+      ? saved.sceneId
+      : chapters[chapterIndex].firstSceneId;
+  const stats = saved?.stats ?? initialStats;
+  return { chapterIndex, sceneId, stats };
+}
+
 // Клик по персонажу → реакция (картинки прислала Khalil). Ноэль — особый случай (ниже).
 const reactionSprites: Record<string, string> = {
-  "/images/characters/kai-neutral.png": "/images/characters/kai-onclick.png",
-  "/images/characters/kai-worried.png": "/images/characters/kai-onclick.png",
-  "/images/characters/kai-annoyed.png": "/images/characters/kai-onclick.png",
-  "/images/characters/leonard-neutral.png": "/images/characters/leonard-onclick.png",
-  "/images/characters/leonard-annoyed.png": "/images/characters/leonard-onclick.png",
-  "/images/characters/ellian-1.png": "/images/characters/ellian-2.png",
+  "/images/characters/kai-aster/kai-neutral.png": "/images/characters/kai-aster/kai-onclick.png",
+  "/images/characters/kai-aster/kai-worried.png": "/images/characters/kai-aster/kai-onclick.png",
+  "/images/characters/kai-aster/kai-annoyed.png": "/images/characters/kai-aster/kai-onclick.png",
+  "/images/characters/leonard/leonard-neutral.png": "/images/characters/leonard/leonard-onclick.png",
+  "/images/characters/leonard/leonard-annoyed.png": "/images/characters/leonard/leonard-onclick.png",
+  "/images/characters/vern-twins/ellian-1.png": "/images/characters/vern-twins/ellian-2.png",
 };
 
 function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
@@ -62,26 +76,25 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
     mcName = "";
   }
 
-  // Стартуем с сохранённой сцены (если есть и она валидна), иначе с пролога.
-  const [currentSceneId, setCurrentSceneId] = useState(() => {
-    const saved = loadSave();
-    return saved && chapter1Scenes.some((scene) => scene.id === saved.sceneId)
-      ? saved.sceneId
-      : "prologue_1";
-  });
-  const [stats, setStats] = useState<GameStats>(() => loadSave()?.stats ?? initialStats);
+  const [chapterIndex, setChapterIndex] = useState(() => loadInitial().chapterIndex);
+  const [currentSceneId, setCurrentSceneId] = useState(() => loadInitial().sceneId);
+  const [stats, setStats] = useState<GameStats>(() => loadInitial().stats);
   const [reaction, setReaction] = useState<string | null>(null);
   // Показываем ли Элиана-защитника (при клике по Ноэлю).
   const [protector, setProtector] = useState(false);
   // Открыта ли панель профиля.
   const [showProfile, setShowProfile] = useState(false);
 
-  // Сохраняем прогресс при каждом изменении сцены или очков.
+  // Сохраняем прогресс при каждом изменении главы, сцены или очков.
   useEffect(() => {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({ sceneId: currentSceneId, stats }));
-  }, [currentSceneId, stats]);
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify({ chapterIndex, sceneId: currentSceneId, stats }),
+    );
+  }, [chapterIndex, currentSceneId, stats]);
 
-  const currentScene = chapter1Scenes.find((scene) => scene.id === currentSceneId);
+  const chapter = chapters[chapterIndex];
+  const currentScene = chapter.scenes.find((scene) => scene.id === currentSceneId);
   if (!currentScene) {
     return <div className="game-page">Scene not found: {currentSceneId}</div>;
   }
@@ -111,13 +124,25 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
     setCurrentSceneId(choice.nextSceneId);
   };
 
-  // Переиграть главу заново: сброс на начало и обнуление очков.
+  // Переиграть ТЕКУЩУЮ главу заново: на её начало, очки обнуляем.
   const handleReplayChapter = () => {
     setReaction(null);
     setProtector(false);
     setShowProfile(false);
     setStats(initialStats);
-    setCurrentSceneId("prologue_1");
+    setCurrentSceneId(chapter.firstSceneId);
+  };
+
+  // Перейти к следующей главе (кнопка на экране конца главы).
+  const handleContinueChapter = () => {
+    setReaction(null);
+    setProtector(false);
+    if (chapterIndex < chapters.length - 1) {
+      const next = chapterIndex + 1;
+      setChapterIndex(next);
+      setStats(initialStats);
+      setCurrentSceneId(chapters[next].firstSceneId);
+    }
   };
 
   const handleCharacterClick = (event: React.MouseEvent) => {
@@ -141,7 +166,9 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
   };
 
   const shownSprite = reaction ?? currentScene.sprite;
-  const isChapterEnd = currentScene.id === "chapter_end";
+  // Конец главы — сцена без продолжения и без выборов.
+  const isChapterEnd = !currentScene.nextSceneId && !currentScene.choices;
+  const hasNextChapter = chapterIndex < chapters.length - 1;
 
   // Локализованные текст сцены и имя говорящего (у героя — имя ГГ).
   const sceneText =
@@ -200,6 +227,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
         {showProfile && (
           <ProfilePanel
             language={language}
+            chapterLabel={chapter.label[language]}
             onChangeLanguage={onChangeLanguage}
             onReplayChapter={handleReplayChapter}
             onClose={() => setShowProfile(false)}
@@ -226,7 +254,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
         {protector && (
           <img
             className="game-protector"
-            src="/images/characters/ellian-protector.png"
+            src="/images/characters/vern-twins/ellian-protector.png"
             alt=""
             onError={(event) => {
               event.currentTarget.style.display = "none";
@@ -235,7 +263,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
         )}
 
         <header className="game-top-panel">
-          <p className="game-label">{t.chapterOne}</p>
+          <p className="game-label">{chapter.label[language]}</p>
           <h1>{t.gameTitle}</h1>
         </header>
 
@@ -245,6 +273,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
             text={sceneText}
             showNextButton={Boolean(currentScene.nextSceneId)}
             nextHintText={t.clickToContinue}
+            eyebrow={currentScene.fact ? t.archiveFact : undefined}
           />
 
           {currentScene.choices && (
@@ -258,7 +287,7 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
           {isChapterEnd && (
             <section className="chapter-result">
               <p className="chapter-result-label">{t.endOfChapter}</p>
-              <h2>{t.chapterSubtitle}</h2>
+              <h2>{chapter.subtitle[language]}</h2>
               <div className="chapter-result-stats">
                 <p>
                   {t.favorite} — <strong>{favorite}</strong>
@@ -270,7 +299,20 @@ function GamePage({ language, onChangeLanguage, onLogout }: GamePageProps) {
                   {t.path} — <em>{path}</em>
                 </p>
               </div>
-              <p className="chapter-result-note">{t.toBeContinued}</p>
+
+              {hasNextChapter ? (
+                <button
+                  className="chapter-continue"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleContinueChapter();
+                  }}
+                >
+                  {t.continueLabel} — {chapters[chapterIndex + 1].label[language]}
+                </button>
+              ) : (
+                <p className="chapter-result-note">{t.toBeContinued}</p>
+              )}
             </section>
           )}
         </div>

@@ -37,8 +37,8 @@ function StartPage({ onStart, language }: StartPageProps) {
   };
 
   const characterSrc = isAlt
-    ? "/images/characters/kai-cut2.png"
-    : "/images/characters/kai-cut.png";
+    ? "/images/characters/kai-aster/kai-cut2.png"
+    : "/images/characters/kai-aster/kai-cut.png";
 
   return (
     <main className="start-page">

@@ -5,11 +5,14 @@ type DialogueBoxProps = {
   text: string;
   showNextButton: boolean; // показывать ли подсказку «клик, чтобы продолжить»
   nextHintText: string; // текст подсказки (локализованный)
+  eyebrow?: string; // маленькая надпись над текстом (напр. «Факт архива»)
 };
 
-function DialogueBox({ speakerName, text, showNextButton, nextHintText }: DialogueBoxProps) {
+function DialogueBox({ speakerName, text, showNextButton, nextHintText, eyebrow }: DialogueBoxProps) {
   return (
-    <section className="dialogue-box">
+    <section className={`dialogue-box${eyebrow ? " dialogue-box--fact" : ""}`}>
+      {/* Маленькая золотая надпись сверху (обучающая вставка «Факт архива») */}
+      {eyebrow && <p className="dialogue-eyebrow">{eyebrow}</p>}
       {/* Имя показываем только если оно есть (у рассказчика — пустое) */}
       {speakerName && <p className="speaker-name">{speakerName}</p>}
       <p className="dialogue-text">{text}</p>

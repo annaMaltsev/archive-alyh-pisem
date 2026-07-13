@@ -6,6 +6,7 @@ import { strings } from "../../features/i18n/strings";
 // Всё читается из localStorage (ничего не уходит на сервер).
 type ProfilePanelProps = {
   language: Lang;
+  chapterLabel: string; // название текущей главы (напр. «Глава вторая»)
   onChangeLanguage: (lang: Lang) => void;
   onReplayChapter: () => void;
   onClose: () => void;
@@ -23,6 +24,7 @@ function readJson<T>(key: string): T | null {
 
 function ProfilePanel({
   language,
+  chapterLabel,
   onChangeLanguage,
   onReplayChapter,
   onClose,
@@ -102,7 +104,7 @@ function ProfilePanel({
         </section>
 
         <section className="profile-section">
-          <p className="profile-label">{t.profChapter}</p>
+          <p className="profile-label">{chapterLabel}</p>
           <button className="profile-replay" onClick={onReplayChapter}>
             {t.replayChapter}
           </button>
